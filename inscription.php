@@ -1,20 +1,55 @@
 <?php require_once "inc/header.inc.php"; ?>
 <?php
 
+if(userConnect()){
+
+    header('location:profil.php');
+    exit();
+}
+
 if($_POST){
     debug($_POST);
 
     // Si la taille du pseudo posté 
-    if(strlen($_POST['pseudo']) <= 3 || strlen($_POST['pseudo']) >= 15){
+    if(empty($_POST['pseudo'])){
+        $error .= "<div class='alert alert-danger'>Veuillez renseigner tous les champs</div>";
+    }
+    elseif(strlen($_POST['pseudo']) <= 3 || strlen($_POST['pseudo']) >= 15){
         // strlen($arg) : retourne la taille de la chaîne (ici $arg)
 
-        $error .= "<div class='alert alert-danger'>Erreur taille pseudo</div>";
+        $error .= "<div class='alert alert-danger'>Votre pseudo doit comporter au moins 4 caractères.</div>";
 
     }
+
+    /*  */
+        // Test le format de mail.
+        $email = $_POST['email'];
+        if(preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $email)){
+            // echo "L'adresse $email est valide !";
+        }
+        else{
+            $error .= "<div class='alert alert-danger'>L'adresse $email ne correspond pas à un format d'adresse e-mail.</div>";
+        }
+
+        // Test du format du numéro de code postal
+        $cp = $_POST['cp'];
+        // echo $cp;
+        if(preg_match("#^[0-9]{5}$#", $cp)){
+            // echo '<div class="alert alert-success">Le code postal est au bon format.</div>'; 
+        }
+        else{
+            $error .= "<div class='alert alert-danger'>Le code postal $cp ne correspond pas à un format de code postal.</div>";
+        }
+
+
+
+    /*  */
+   
 
     /* Il faudra des vérifications pr chaque champ pour vérifier 
     - qu'aucun n'est vide, 
     - tester les expressions régulières pour avoir une adresse mail ou autre au bon format  
+    - virer les balises
     
     */
 
@@ -44,8 +79,8 @@ if($_POST){
                         VALUES (
                                     '$_POST[pseudo]',
                                     '$_POST[mdp]',
-                                    '$_POST[prenom]',
                                     '$_POST[nom]',
+                                    '$_POST[prenom]',
                                     '$_POST[email]',
                                     '$_POST[sexe]',
                                     '$_POST[ville]',
@@ -75,7 +110,7 @@ if($_POST){
     <input type="text" name="pseudo" class="form-control"><br>
 
     <label>Mot de passe</label>
-    <input type="text" name="mdp" class="form-control"><br>
+    <input type="password" name="mdp" class="form-control"><br>
 
     <label>Nom</label>
     <input type="text" name="nom" class="form-control"><br>
@@ -93,11 +128,11 @@ if($_POST){
     <label>Adresse</label>
     <input type="text" name="adresse" class="form-control"><br>
 
-    <label>Ville</label>
-    <input type="text" name="ville" class="form-control"><br>
-
     <label>Code postal</label>
     <input type="text" name="cp" class="form-control"><br>
+
+    <label>Ville</label>
+    <input type="text" name="ville" class="form-control"><br>
 
 
     <input type="submit" value="S'inscrire" class="btn btn-secondary">

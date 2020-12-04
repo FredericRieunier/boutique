@@ -16,6 +16,41 @@
 <!-- CSS PERSO ( en dernière position ) -->
 <link rel="stylesheet" href="">
 
+<!--  -->
+<style>
+
+.fiche-produit{
+  width: 100%;
+  min-height: 2rem;
+  background-color: lightgray;
+  border: 1px solid black;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.fiche-produit h3{
+  text-align: center;
+}
+
+.fiche-produit p{
+  text-align: justify;
+}
+
+.categorie{
+  text-align: right !important;
+  font-weight: bold;
+}
+
+.prix{
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-weight: bold;
+}
+
+</style>
+<!--  -->
+
 </head>
 <body>
 
@@ -30,25 +65,50 @@
       <li class="nav-item">
         <a class="nav-link" href="<?= URL ?>index1.php">Accueil</a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL ?>inscription.php">Inscription</a>
+        <a class="nav-link" href="<?= URL ?>panier.php">Panier</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?= URL ?>connexion.php">Connexion</a>
-      </li>
+
+      <?php if(userConnect()) : //Si l'internaute est connecté, on affiche les liens profil et déconnexion
+      ?>
+
+        <li class="nav-item">
+          <a class="nav-link" href="<?= URL ?>profil.php">Profil</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="<?= URL ?>connexion.php?action=deconnexion">Déconnexion</a>
+        </li>
+
+      <?php else : //Sinon, c'est qu'on n'est pas connecté, on affiche le lien inscription. ?>
+
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo URL ?>inscription.php">Inscription</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?= URL ?>connexion.php">Connexion</a>
+        </li>
+
+      <?php endif; ?>
       
-      <!-- 
-          *** Back office ***
+      
+          <!-- *** Back office *** -->
+
+      <?php if(adminConnect()) : //Si l'admin est connecté :
+      ?>
           <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           BackOffice
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">-</a>
+          <a class="dropdown-item" href="<?= URL ?>admin/gestion_boutique.php">Gestion boutique</a>
           <a class="dropdown-item" href="#">-</a>
           <a class="dropdown-item" href="#">-</a>
         </div> 
-        -->
+
+      <?php endif; ?>
+       
 
       </li> 
     </ul>

@@ -1,7 +1,22 @@
 <?php require_once 'inc/header.inc.php'; ?>
 <?php
+
+// DECONNEXION : 
+// Debug ($_GET);
+
+if(isset($_GET['action']) && $_GET['action'] == 'deconnexion'){ //S'il y a une action valant deconnexion dans l'URL alors on détruit la session.
+
+    session_destroy();
+}
+
+// Restriction à l'accès à cette page si on est connecté :
+if(userConnect()){
+    header('location:profil.php');
+    exit();
+}
+
 if($_POST){
-    debug($_POST);
+    // debug($_POST);
 
 
 
@@ -15,23 +30,33 @@ if($_POST){
         
         
         $membre = $r->fetch(PDO::FETCH_ASSOC);
-        debug($membre);
+        // debug($membre);
 
         if(password_verify($_POST['mdp'], $membre['mdp'])){
             //password_verify(arg1, arg2) : permet de comparer une chaîne de caractère ac une chaîne cryptée.
                 // arg1 : le mdp (ici, posté par l'internaute)
                 // arg2 : la chaîne cryptée (par la fonction password_hash, ici, le mdp en bdd)
                 echo '<div class="alert alert-success">Vous êtes connecté.</div>';
+
+                //Ici, on va renseigner les informations concernant la personne connectée dans notre fichier de session:
+			foreach( $membre as $index => $valeur ){
+
+				$_SESSION['membre'][$index] = $valeur;
+			}
+           
+            // redirection vers la page de profil
+            header('location:profil.php');
+
         }
         else{  //Sinon, le mdp est incorrect.
-            $error .= '<div class="alert alert-danger">Erreur mdp</div>';
+            $error .= '<div class="alert alert-danger">Le mot de passe ne correspond pas au pseudo saisi.</div>';
         }
 
 
     }
     else{ //Sinon, le pseudo n'existe donc pas ds la bdd
 
-        $error .= '<div class="alert alert-danger">Erreur pseudo</div>';
+        $error .= '<div class="alert alert-danger">Ce pseudo n\'existe pas.</div>';
 
     }
 }
@@ -54,5 +79,7 @@ if($_POST){
     <input type="submit" value="Se connecter" class="btn btn-secondary">
 
 </form>
+
+
 
 <?php require_once 'inc/footer.inc.php'; ?>
