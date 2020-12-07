@@ -1,5 +1,24 @@
 <?php require_once 'inc/header.inc.php'; ?>
 <?php
+
+/*  */
+/* if(!empty($_GET) && isset($_GET['action']) && $_GET['action'] == 'suppression'){
+    // debug($_GET['id_produit']);
+    // debug($_SESSION['panier']['id_produit']);
+
+
+    foreach($_SESSION['panier']['id_produit'] as $article_du_panier){
+        if($article_du_panier == $_GET['id_produit']){
+            // $article_du_panier = '';
+            debug($article_du_panier);
+        }
+    
+    }
+} */
+
+debug($_SESSION);
+
+/*  */
      
 if(isset($_POST['ajout_panier'])){
     // On vérifie l'existence d'un submit ds le fichier fiche_produit.php (ajout_panier vient de l'attribut name du submit ds fiche_produit.php)
@@ -13,6 +32,7 @@ if(isset($_POST['ajout_panier'])){
     // $_POST['quantite'] : provient du select de fiche_produit.php
    
 }
+// debug($_SESSION['panier']['id_produit']);
 
 // debug($_SESSION);
 // debug($_SESSION['panier']);
@@ -26,11 +46,14 @@ if(isset($_POST['ajout_panier'])){
 // debug( $_SESSION['membre']['id_membre'] );
 // debug( $_POST );
 
-$id_membre = $_SESSION['membre']['id_membre'];
+if(isset($_SESSION['membre'])){
+    $id_membre = $_SESSION['membre']['id_membre'];
+}
 
 if(isset($_POST['payer']) && $_POST['payer'] == 'Payer'){
     
     $content .= '<div class="alert alert-success">Votre commande est validée.</div>';
+
     execute_requete("INSERT INTO commande(id_membre, montant, date)
                     VALUES('$id_membre',"
                            . montant_total() . ",
@@ -76,7 +99,7 @@ if(isset($_POST['payer']) && $_POST['payer'] == 'Payer'){
 
 
 }
-debug($_SESSION);
+
 // debug($_SESSION['panier']['quantite'][$i]);
 
 
@@ -91,6 +114,7 @@ $content .= '<table class="table">';
                         <th>Titre</th>
                         <th>Quantité</th>
                         <th>Prix</th>
+                        <th>Supprimer</th>
                     </tr>';
     if(empty($_SESSION['panier']['id_produit'])){
         // Si ma session panier id_produit est vide, c'est q je n'ai rien ds mon panier.
@@ -108,11 +132,23 @@ $content .= '<table class="table">';
                 $content .= '<td>' . $_SESSION['panier']['quantite'][$i] . '</td>';
                 $content .= '<td>' . $_SESSION['panier']['prix'][$i] * $_SESSION['panier']['quantite'][$i] . ' euros</td>';
 
+                /*  */
+
+                /* $content .= '<td class="text-center">
+                                <a href="?action=suppression&id_produit=' . $_SESSION['panier']['id_produit'][$i] . '" onclick="return(confirm(\'En êtes-vous certain ?\'))">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                            </td>'; */
+
+                /*  */
+
            $content .= '</tr>';
        }
        $content .= "<tr>
                    <th colspan='2'>Montant total : </th>
                     <th>" . montant_total(). " euros</th></tr>";
+
+        
 
         if(userConnect()){
             $content .= '<form method="post">';

@@ -38,9 +38,10 @@ if($produit['stock'] > 0){
     // Si le stock est supérieur à 0
     $content .= "<p>Nombre de produits disponibles : $produit[stock]</p>";
     $content .= '<form method="post" action="panier.php">';
-
-        $content .= "<input type='hidden' name='id_produit' value='$produit[id_produit]'>";
     // Quand on cliquera sur le bouton d'ajout au panier, on sera basculé vers la page panier
+    
+        $content .= "<input type='hidden' name='id_produit' value='$produit[id_produit]'>";
+    
         $content .= '<label>Quantité :</label><br>';
         $content .= '<select name="quantite">';
             for($i=1; $i<=$produit['stock']; $i++){

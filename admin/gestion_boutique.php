@@ -44,6 +44,13 @@ if(isset($_GET['action']) && $_GET['action'] == 'suppression'){
 
 }
 
+/*  */
+// Suppression multiple supprimer = suppression multiple
+/* if(isset($_GET['action']) && $_GET['action'] == 'supprimer'){
+
+} */
+
+/*  */
 
 // Gestion des produits (INSERTION et MODIFICATION)
 // Il faudrait ajouter les contrôles à ts ces champs
@@ -164,6 +171,11 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
             }
             $content .= '<th>Suppression</th>';
             $content .= '<th>Modification</th>';
+            /*  */
+            // Ajout des suppressions multiples
+            $content .= '<th>Sélection</th>';
+
+            /*  */
         $content .= '</tr>';
 
         while($ligne = $r->fetch(PDO::FETCH_ASSOC)){
@@ -196,18 +208,36 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
                                 </a>
                             </td>';
 
+                            /*  */
+                // Ajout des suppressions multiples
+                $content .= '<td class="text-center">
+                                <form method="post" action="panier.php" name="">
+                                    <input type="checkbox" name="supprim[]" value="' . $ligne['id_produit'] . '">
+                                </form>
+                            </td>';
+
+                
+
+
+                            /*  */
+
             $content .= '</tr>';
         }
 
 
     $content .= '</table>';
+
+    /*  */
+    $content .= '<br><div class="row justify-content-end"><form method="post" action="gestion_boutique.php?action=supprimer&id_produit=" name=""><input type="submit" class="mr-5" value="Supprimer les produits sélectionnés"></form></div>';
+   
     
+    /*  */
     // $r->fetchAll(PDO::FETC_ASSOC);
 
 
 }
 
-
+debug($_GET);
 ?>
 
 
