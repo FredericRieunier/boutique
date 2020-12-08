@@ -114,3 +114,23 @@ function montant_total(){
     }
     return $total;
 }
+
+// Création d'une fonction pour retirer un produit du panier
+function retirer_produit_panier($id_produit_a_supprimer){
+    $index = array_search($id_produit_a_supprimer, $_SESSION['panier']['id_produit']);
+
+    if($index !== false){
+        // Si le produit existe
+        array_splice($_SESSION['panier']['titre'], $index, 1);
+        array_splice($_SESSION['panier']['id_produit'], $index, 1);
+        array_splice($_SESSION['panier']['quantite'], $index, 1);
+        array_splice($_SESSION['panier']['prix'], $index, 1);
+
+        // array_splice(arg1, arg2, arg3) Permet de supprimer un/des élements d'un tableau :
+            // arg1 : le tableau où on va fr une suppression
+            // arg2 : l'élément qu'on cherche à supprimer
+            // arg3 : le nbr d'élément qu'on vt suppr (à partir de l'indice $arg2)
+
+    }
+
+}

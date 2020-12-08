@@ -103,8 +103,8 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?= URL ?>admin/gestion_boutique.php">Gestion boutique</a>
-          <a class="dropdown-item" href="#">-</a>
-          <a class="dropdown-item" href="#">-</a>
+          <a class="dropdown-item" href="<?= URL ?>admin/gestion_membre.php">Gestion membres</a>
+          <a class="dropdown-item" href="<?= URL ?>admin/gestion_commande.php">Gestion commandes</a>
         </div> 
 
       <?php endif; ?>

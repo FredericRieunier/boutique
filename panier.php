@@ -1,24 +1,14 @@
 <?php require_once 'inc/header.inc.php'; ?>
 <?php
 
-/*  */
-/* if(!empty($_GET) && isset($_GET['action']) && $_GET['action'] == 'suppression'){
-    // debug($_GET['id_produit']);
-    // debug($_SESSION['panier']['id_produit']);
+// ACTION de retirer un produit du panier
+if(!empty($_GET) && isset($_GET['action']) && $_GET['action'] == 'suppression'){
+    retirer_produit_panier($_GET['id_produit']);
+}
+
+// debug($_SESSION['panier']);
 
 
-    foreach($_SESSION['panier']['id_produit'] as $article_du_panier){
-        if($article_du_panier == $_GET['id_produit']){
-            // $article_du_panier = '';
-            debug($article_du_panier);
-        }
-    
-    }
-} */
-
-debug($_SESSION);
-
-/*  */
      
 if(isset($_POST['ajout_panier'])){
     // On vérifie l'existence d'un submit ds le fichier fiche_produit.php (ajout_panier vient de l'attribut name du submit ds fiche_produit.php)
@@ -50,7 +40,7 @@ if(isset($_SESSION['membre'])){
     $id_membre = $_SESSION['membre']['id_membre'];
 }
 
-if(isset($_POST['payer']) && $_POST['payer'] == 'Payer'){
+if(isset($_POST['payer'])){
     
     $content .= '<div class="alert alert-success">Votre commande est validée.</div>';
 
@@ -104,9 +94,15 @@ if(isset($_POST['payer']) && $_POST['payer'] == 'Payer'){
 
 
 // ---------------------------------------
+// Action de vider le panier
+if(isset($_GET['action']) && $_GET['action'] == 'vider'){
+    unset($_SESSION['panier']);
+    
+}
 
 
 
+// ---------------------------------------
 // Afichage du panier
 
 $content .= '<table class="table">';
@@ -114,7 +110,7 @@ $content .= '<table class="table">';
                         <th>Titre</th>
                         <th>Quantité</th>
                         <th>Prix</th>
-                        <th>Supprimer</th>
+                        
                     </tr>';
     if(empty($_SESSION['panier']['id_produit'])){
         // Si ma session panier id_produit est vide, c'est q je n'ai rien ds mon panier.
@@ -134,11 +130,11 @@ $content .= '<table class="table">';
 
                 /*  */
 
-                /* $content .= '<td class="text-center">
+                $content .= '<td class="text-center">
                                 <a href="?action=suppression&id_produit=' . $_SESSION['panier']['id_produit'][$i] . '" onclick="return(confirm(\'En êtes-vous certain ?\'))">
                                     <i class="far fa-trash-alt"></i>
                                 </a>
-                            </td>'; */
+                            </td>';
 
                 /*  */
 
@@ -146,7 +142,7 @@ $content .= '<table class="table">';
        }
        $content .= "<tr>
                    <th colspan='2'>Montant total : </th>
-                    <th>" . montant_total(). " euros</th></tr>";
+                    <th>" . montant_total() . " euros</th></tr>";
 
         
 
@@ -167,6 +163,14 @@ $content .= '<table class="table">';
             $content .= '</tr>';
         }
     // $content .= ''
+
+    // Vider le panier :
+        $content .= '<tr>';
+            $content .= '<td colspan="4">';
+                $content .= '<a href="?action=vider">Vider mon panier</a>';
+
+            $content .= '</td>';
+        $content .= '</tr>';
     }
         
 
